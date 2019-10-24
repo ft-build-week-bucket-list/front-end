@@ -1,7 +1,7 @@
 import React from 'react';
 import axiosWithAuth from '../utils/axiosWithAuth';
 import styled from "styled-components";
-import Logo from '../img/bucketlistlogo.png';
+import Logo from '../img/lystwhite.png';
 
 function Login(props) {
     const [form, setForm] = React.useState({
@@ -33,7 +33,7 @@ function Login(props) {
     <StyledBody>     
      <StyledDiv>
       <StyledImg className="logo" alt="logo" src={Logo}/>   
-      <StyledP>Login Page</StyledP>
+      <StyledT>Login Page</StyledT>
       <br/>
        <StyledForm onSubmit={login}>
         <StyledP>
@@ -79,6 +79,11 @@ const StyledForm = styled.form`
   display:flex;
   flex-direction: column;
   align-items:center; 
+`;
+
+const StyledT = styled.text`
+  color:#ffffff;
+  font-size:20px;
 `;
 
 export default Login;
