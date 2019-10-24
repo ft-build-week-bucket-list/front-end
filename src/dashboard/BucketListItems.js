@@ -1,58 +1,92 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Route, Link, Switch } from "react-router-dom";
 import axiosWithAuth from "../utils/axiosWithAuth";
+import styled from "styled-components";
+import Logo from '../img/lystwhite.png';
 
-const BucketListItems = ({
- listEditing,
- setListEditing,
- bucketListItem,
- setBucketListItem
-}) => {
- const [listItem, setListItem] = useState([]);
- const fetchListItem = () => {
+const BucketListItems = ({ listOf, setList }) => {
+ const [listToAdd, setListToAdd] = useState({ item_name: "", bucket_id: 33 });
+ const addItem = e => {
+   console.log("here", listOf);
+   e.preventDefault();
    axiosWithAuth()
-     .get(`/buckets/${bucketListItem.id}`)
+     .post("/items", listToAdd)
+     .then(res => {
+       console.log("props arent spreading", res);
+       setList([...listOf, listToAdd]);
+     })
+     .catch(err => console.log(err));
+   axiosWithAuth()
+     .get("/items")
      .then(res => {
        console.log(res);
-       setListItem(res.data);
+       setListToAdd(res.data);
      })
      .catch(err => console.log(err.response));
+   // useEffect(() => {
+   //   addItem();
+   // }, []);
  };
- useEffect(() => {
-   fetchListItem();
- }, []);
- const editItem = listItem => {
-   listEditing(true);
-   setListEditing(listItem);
- };
- const deleteItem = listItem => {
+ const deleteList = id => {
    axiosWithAuth()
-     .delete(`/buckets/${bucketListItem.id}`)
+     .delete(`/items/${id}`)
      .then(res => {
        console.log("delete", res);
-       setBucketListItem(listItem.filter(item => item.id !== listItem.id));
+       setList(listOf.filter(item => item.id !== id));
      })
      .catch(err => console.log(err.response));
  };
+ const changeHandler = e => {
+   setListToAdd({ ...listToAdd, item_name: e.target.value });
+ };
  return (
-   <div>
-     {listEditing.map(listItem => (
-       <li onClick={() => editItem(listItem)}>
-         <span>
-           <span
-             className="delete"
-             onClick={e => {
-               e.stopPropagation();
-               deleteItem(listItem);
-             }}
-           >
-             {" "}
-             x
-           </span>{" "}
-           {listItem}
-         </span>
-       </li>
-     ))}
-   </div>
+    <StyledDiv> 
+     <StyledImg className="logo" alt="logo" src={Logo}/>
+     <StyledP> Your Bucket List </StyledP>
+     <div>
+       <form onSubmit={addItem}>
+         <input
+           type="text"
+           name="name"
+           onChange={changeHandler}
+           value={listToAdd.item_name}
+         />
+         <button type="submit">Add List</button>
+       </form>
+     </div>
+     {/* {listOf.map(list => {
+       console.log("props", listOf);
+       return (
+         <div>
+           {listOf.id}
+           <button onClick={() => deleteList(list.id)}>Delete</button>
+         </div>
+       );
+     })} */}
+    </StyledDiv> 
  );
 };
+
+//Styled Component
+const StyledDiv = styled.div`
+  background:#242943;
+  width:100%;
+  height:800px;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+`;
+
+const StyledBody = styled.div`
+  display:flex;
+  justify-content:center;
+`;
+
+const StyledP = styled.text`
+  color:#ffffff;
+`;
+
+const StyledImg = styled.img`
+`; 
+
 export default BucketListItems;

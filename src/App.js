@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Registration from './components/Registration';
 import BucketLists from './dashboard/BucketLists';
 import PrivateRoute from "./components/PrivateRoute";
+import BucketListItems from "./dashboard/BucketListItems";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/login" component={Login}/>
       <Route path="/registration" component={Registration}/>
       <PrivateRoute exact path="/bucketlists" component={BucketLists} />
+      <Route path="/bucketlistitems" component={BucketListItems} />
     </div>
   );
 }

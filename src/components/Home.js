@@ -3,14 +3,15 @@ import { Route, Link } from "react-router-dom";
 import Login from './Login';
 import Registration from './Registration';
 import styled from "styled-components";
-import Logo from '../img/bucketlistlogo.png';
+import Logo from '../img/lystwhite.png';
 
 function Home() {
   return ( 
   <StyledBody> 
    <StyledDiv> 
     <StyledImg className="logo" alt="logo" src={Logo}/>
-    <StyledP>Welcome to the Bucket List</StyledP>
+    <StyledT>Welcome to the Bucket List</StyledT>
+     <br/>
       <Link to="/login"><button>Login</button></Link>
       <Link to="/registration"><button>Register</button></Link>     
    </StyledDiv>  
@@ -39,5 +40,10 @@ const StyledP = styled.text`
 
 const StyledImg = styled.img`
 `; 
+
+const StyledT = styled.text`
+  color:#ffffff;
+  font-size:20px;
+`;
 
 export default Home;
